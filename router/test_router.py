@@ -2,7 +2,6 @@ import ollama
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.sql import text
 
-from schema.test_dto import GenerateTestReqDTO
 from util.database import get_db
 from sqlalchemy.orm import Session
 
