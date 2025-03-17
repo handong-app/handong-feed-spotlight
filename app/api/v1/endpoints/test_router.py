@@ -1,8 +1,7 @@
-import ollama
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 from sqlalchemy.sql import text
 
-from util.database import get_db
+from app.core.database import get_db
 from sqlalchemy.orm import Session
 
 test_router = APIRouter()

@@ -1,10 +1,7 @@
 from fastapi import FastAPI
-from contextlib import asynccontextmanager
-import subprocess
-import asyncio
 
-from router.healthcheck_router import healthcheck_router
-from router.test_router import test_router
+from app.api.v1.endpoints.healthcheck_router import healthcheck_router
+from app.api.v1.endpoints.test_router import test_router
 
 
 # @asynccontextmanager
