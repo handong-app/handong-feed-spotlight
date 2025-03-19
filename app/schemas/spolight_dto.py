@@ -18,5 +18,5 @@ class SpotlightDto:
         messages:  List[FeedMessageDto]
 
     class GenerateSpotlightRankServDto(BaseModel):
-        spotlights: List[Dict[str, str]]
+        spotlights: str
 
