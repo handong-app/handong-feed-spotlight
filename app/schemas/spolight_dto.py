@@ -11,12 +11,11 @@ class SpotlightDto:
     class GetSpotlightRespDto(BaseModel):
         target_date: str
         # summary: str
-        spotlights: List[Dict[str, str]]
+        # spotlights: List[Dict[str, str]]
+        scores: List[int]
 
     class FetchFeedMessagesByDateServDto(BaseModel):
         target_date: str
         messages:  List[FeedMessageDto]
 
-    class GenerateSpotlightRankServDto(BaseModel):
-        spotlights: str
-
+    class GenerateSpotlightScoreServDto(BaseModel):
