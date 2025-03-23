@@ -7,6 +7,8 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 
 from app.repositories.tb_ka_message_repository import TbKaMessageRepository
+from app.repositories.tb_spotlight_score_repository import SpotlightScoreRepository
+from app.repositories.tb_spotlight_summary_repository import SpotlightSummaryRepository
 from app.schemas.feed_message_dto import FeedMessageDto
 from app.schemas.spolight_dto import SpotlightDto
 
@@ -25,8 +27,19 @@ class SpotlightService:
 
         # 가져온 메세지들의 spotlight 점수 생성
         generate_spotlight_score_serv_dtos = self.generate_spotlight_scores(fetch_feed_messages_by_date_serv_dto.messages)
+
+        # 스코어 DB에 저장
+        score_repo = SpotlightScoreRepository(self.db)
+        score_repo.save_scores(generate_spotlight_score_serv_dtos, spotlight_req_dto.target_date)
+
         # 가져온 메세지들의 spotlight summary 생성
         generated_summary = self.generate_spotlight_summary(fetch_feed_messages_by_date_serv_dto.messages)
+
+        # summary DB에 저장
+        summary_repo = SpotlightSummaryRepository(self.db)
+        summary_repo.save_summary(generated_summary, spotlight_req_dto.target_date)
+
+
         # 생성된 spotlight score 와 summary 로 최종 response dto 생성
         get_spotlight_resp_dto = SpotlightDto.GetSpotlightRespDto(
             for_date = spotlight_req_dto.target_date,
