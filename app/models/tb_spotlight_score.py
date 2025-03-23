@@ -2,8 +2,8 @@ from sqlalchemy import Column, String, Integer, DateTime, Date
 from app.util.date_utils import get_seoul_time
 from app.core.database import Base
 
-class TbSpotlightRank(Base):
-    __tablename__ = "TbSpotlightRank"
+class TbSpotlightScore(Base):
+    __tablename__ = "TbSpotlightScore"
 
     id = Column(String(32), primary_key=True)
     tb_ka_message_id = Column(String(32), nullable=False)
