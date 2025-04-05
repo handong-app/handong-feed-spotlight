@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "handong-feed-spotlight",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
