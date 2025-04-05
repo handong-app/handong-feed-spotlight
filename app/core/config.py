@@ -1,3 +1,4 @@
+import json
 import os
 from dotenv import load_dotenv
 
@@ -13,6 +14,9 @@ class EnvVariables:
     DB_PASSWORD = os.getenv("DB_PASSWORD")
     DB_CLASSNAME = os.getenv("DB_CLASSNAME")
     DB_PORT = os.getenv("DB_PORT")
+
+    SAMPLE_TAGS = json.loads(os.getenv("SAMPLE_TAGS", "[]"))
+    SAMPLE_MESSAGES = json.loads(os.getenv("SAMPLE_MESSAGES", "[]"))
 
     @staticmethod
     def get_routes_by_prefix(prefix):
