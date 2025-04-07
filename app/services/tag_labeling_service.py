@@ -1,8 +1,10 @@
+import logging
 import json
 import ollama
 from app.schemas.tag_labeling_dto import MessageTagAssignment, MessageTagLabelingRespDto
 from app.util.text_cleaner import TextCleaner
 
+logger = logging.getLogger(__name__)
 
 class TagLabelingService:
     def __init__(self):
@@ -19,9 +21,7 @@ class TagLabelingService:
             cleaned_message = self.cleaner.clean(raw_text)
             assignment = self.assign_tag_to_message(subject_id, cleaned_message, tags)
             assignments.append(assignment)
-
-        dto = MessageTagLabelingRespDto(assignments=assignments)
-        return dto
+        return MessageTagLabelingRespDto(assignments=assignments)
 
     def assign_tag_to_message(self, subject_id, message, tags) -> MessageTagAssignment:
         system_prompt = f"""
@@ -46,7 +46,7 @@ class TagLabelingService:
         llm_resp = ollama.chat(model="llama3:8b", messages=messages_for_llm)
         try:
             response_text = llm_resp["message"]["content"]
-            print(f"LLM response for subject_id {subject_id}:", response_text)
+            logger.info(f"LLM response for subject_id {subject_id}: {response_text}")
 
             tag_codes = self.extract_tag_codes_array_from_json_str(response_text)
 
@@ -73,8 +73,6 @@ class TagLabelingService:
 
             if not isinstance(tag_codes, list):
                 raise Exception("Result is not a list")
-
             return tag_codes
-
         except Exception as e:
             raise Exception(str(e)) from e
