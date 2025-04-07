@@ -13,10 +13,24 @@ class TagLabelingService:
     def assign_tags_to_messages_iterative(self, messages, tags) -> MessageTagLabelingRespDto:
         """
         """
+
+        if not messages:
+            logger.warning("Empty messages list provided")
+            return MessageTagLabelingRespDto(assignments=[])
+
+        if not tags:
+            logger.warning("Empty tags list provided")
+            return MessageTagLabelingRespDto(assignments=[])
+
         assignments = []
 
         for msg in messages:
             subject_id = msg.get("subject_id")
+
+            if not subject_id:
+                logger.warning("Message without subject_id found, skipping")
+                continue
+
             raw_text = msg.get("message", "")
             cleaned_message = self.cleaner.clean(raw_text)
             assignment = self.assign_tag_to_message(subject_id, cleaned_message, tags)
