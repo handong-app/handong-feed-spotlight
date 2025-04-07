@@ -9,8 +9,12 @@ class TextCleaner:
     @staticmethod
     def _load_stopwords() -> set:
         stopword_path = os.path.join(os.path.dirname(__file__), "stopwords_ko.txt")
-        with open(stopword_path, "r", encoding="utf-8") as f:
-            return set(line.strip() for line in f if line.strip())
+        try:
+            with open(stopword_path, "r", encoding="utf-8") as f:
+                return set(line.strip() for line in f if line.strip())
+        except FileNotFoundError:
+            print(f"경고: 불용어 파일을 찾을 수 없습니다: {stopword_path}")
+        return set()
 
     @staticmethod
     def normalize_text(text: str) -> str:
