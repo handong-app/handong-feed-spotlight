@@ -24,6 +24,17 @@ class TagLabelingService:
         return MessageTagLabelingRespDto(assignments=assignments)
 
     def assign_tag_to_message(self, subject_id, message, tags) -> MessageTagAssignment:
+        """
+        단일 메시지에 적합한 태그를 할당합니다.
+
+        Args:
+            subject_id: 메시지의 고유 식별자
+            message: 태그를 할당할 전처리된 메시지 내용
+            tags: 할당 가능한 태그 목록
+
+        Returns:
+            MessageTagAssignment: 메시지에 할당된 태그 정보
+        """
         system_prompt = f"""
                    persona: 너는 콘텐츠 라벨링 전문가야.
                    instruction:
