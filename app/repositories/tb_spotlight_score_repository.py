@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.models.tb_spotlight_score import TbSpotlightScore
 from app.util.date_utils import get_seoul_time
-from app.schemas.spolight_dto import SpotlightDto
+from app.schemas.spotlight_dto import SpotlightDto
 from app.core.database import Base
 
 

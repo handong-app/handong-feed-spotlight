@@ -10,7 +10,7 @@ from app.repositories.tb_ka_message_repository import TbKaMessageRepository
 from app.repositories.tb_spotlight_score_repository import SpotlightScoreRepository
 from app.repositories.tb_spotlight_summary_repository import SpotlightSummaryRepository
 from app.schemas.feed_message_dto import FeedMessageDto
-from app.schemas.spolight_dto import SpotlightDto
+from app.schemas.spotlight_dto import SpotlightDto
 
 
 class SpotlightService:
