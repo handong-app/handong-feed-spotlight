@@ -51,7 +51,7 @@ class TagLabelingService:
             tag_codes = self.extract_tag_codes_array_from_json_str(response_text)
 
         except Exception as e:
-            raise Exception(f"LLM response parsing failed for subject_id {subject_id}: " + str(e))
+            raise Exception(f"LLM response parsing failed for subject_id {subject_id}: {e}") from e
 
         return MessageTagAssignment(subject_id=subject_id, tag_codes=tag_codes)
 
@@ -77,4 +77,4 @@ class TagLabelingService:
             return tag_codes
 
         except Exception as e:
-            raise Exception(str(e))
+            raise Exception(str(e)) from e
