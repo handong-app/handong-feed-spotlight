@@ -1,11 +1,12 @@
+import re
+
+from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline
 from huggingface_hub import HfFolder
+from functools import reduce
 
 from app.core.config import EnvVariables
 
 HfFolder.save_token(EnvVariables.HUGGING_FACE_TOKEN)
-
-import re
-from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline
 
 
 # 한국어 NER 모델 불러오기 (본 파일 import 시 바로 실행 됨)
@@ -24,7 +25,6 @@ def mask_korean_names_ner(text: str) -> str:
     :return text:
     """
     entities = ner_pipeline(text)
-    # print(text, entities)
     for entity in entities:
         if entity['entity_group'] == 'PS':
             text = text.replace(entity['word'], '[이름]')
@@ -74,7 +74,6 @@ def mask_all_ppi(text: str) -> str:
     :param text:
     :return text:
     """
-    from functools import reduce
 
     masking_functions = (mask_korean_names_ner, mask_link, mask_email, mask_phone_number)
 
