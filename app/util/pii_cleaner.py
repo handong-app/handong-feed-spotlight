@@ -39,9 +39,7 @@ def mask_link(text: str) -> str:
     :param text:
     :return text:
     """
-    no_http = re.sub(r'https?://[^\s]+', '[링크]', text)
-    no_https = re.sub(r'http?://[^\s]+', '[링크]', no_http)
-    return no_https
+    return re.sub(r'https?://[^\s]+', '[링크]', text)
 
 
 def mask_email(text: str) -> str:
