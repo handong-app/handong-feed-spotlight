@@ -2,6 +2,7 @@ import logging
 import json
 import ollama
 from app.schemas.tag_labeling_dto import MessageTagAssignment, MessageTagLabelingRespDto
+from app.util.pii_cleaner import mask_all_ppi
 from app.util.text_cleaner import TextCleaner
 
 logger = logging.getLogger(__name__)
@@ -32,7 +33,11 @@ class TagLabelingService:
                 continue
 
             raw_text = msg.get("message", "")
-            cleaned_message = self.cleaner.clean(raw_text)
+
+            masked_text = mask_all_ppi(raw_text)
+
+            cleaned_message = self.cleaner.clean(masked_text)
+
             assignment = self.assign_tag_to_message(subject_id, cleaned_message, tags)
             assignments.append(assignment)
         return MessageTagLabelingRespDto(assignments=assignments)
