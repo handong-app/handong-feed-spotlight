@@ -11,7 +11,7 @@ class TbKaMessageRepository:
         """last_sent_at 이 target_date인 메세지 데이터를 조회"""
 
         query = text("""
-            SELECT id, message, FROM_UNIXTIME(last_sent_at) AS last_sent_at_datetime
+            SELECT id, message
             FROM TbKaMessage
             WHERE deleted != 'Y'
               AND threshold < distance
