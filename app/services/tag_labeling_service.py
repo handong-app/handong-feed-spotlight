@@ -89,7 +89,7 @@ class TagLabelingService:
             except Exception as e:
                 logger.error(f"LLM 응답 파싱 실패 for subject_id {subject_id} on attempt {attempt}: {e}")
                 if attempt == max_attempts:
-                    raise Exception(f"assign_tag_to_message 실패: {subject_id}에 대해 {max_attempts}번 시도했으나 실패했습니다. ({e})")
+                    raise Exception(f"assign_tag_to_message 실패: {subject_id}에 대해 {max_attempts}번 시도했으나 실패했습니다. ({e})") from e
 
     @staticmethod
     def extract_tag_codes_array_from_json_str(text) -> list:
