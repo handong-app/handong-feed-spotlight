@@ -1,4 +1,3 @@
-from huggingface_hub import login
 from huggingface_hub import HfFolder
 
 from app.core.config import EnvVariables
