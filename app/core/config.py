@@ -15,7 +15,12 @@ class EnvVariables:
     DB_CLASSNAME = os.getenv("DB_CLASSNAME")
     DB_PORT = os.getenv("DB_PORT")
 
+    LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama")
+
     HUGGING_FACE_TOKEN = os.getenv("HUGGING_FACE_TOKEN")
+
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    GEMINI_API_URL = os.getenv("GEMINI_API_URL")
 
     SAMPLE_TAGS = json.loads(os.getenv("SAMPLE_TAGS", "[]"))
     SAMPLE_MESSAGES = json.loads(os.getenv("SAMPLE_MESSAGES", "[]"))
