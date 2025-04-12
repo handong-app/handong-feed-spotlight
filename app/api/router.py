@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.v1.endpoints.spotlight_router import spotlight_router
-from app.api.v1.endpoints.tag_labeling_api import tag_labeling_router
+from app.api.v1.endpoints.tag_labeling_router import tag_labeling_router
 from app.api.v1.endpoints.test_router  import test_router
 from app.api.v1.endpoints.healthcheck_router import healthcheck_router
 
