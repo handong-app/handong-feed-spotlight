@@ -35,7 +35,7 @@ class LLMService:
 
     def request_tag_assignment(self, message, tags) -> str:
         """
-        EnvVariables.LLM_PROVIDER 값을 참조하여, 올라마 또는 Gemini API 호출 함수를 선택합니다.
+        EnvVariables.LLM_PROVIDER 값을 참조하여, Ollama 또는 Gemini API 호출 함수를 선택합니다.
         """
         provider = EnvVariables.LLM_PROVIDER.lower()
         if provider == "gemini":
