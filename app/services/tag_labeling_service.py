@@ -60,5 +60,7 @@ class TagLabelingService:
             assignment = self.llm_service.assign_tag_to_message(subject_id, cleaned_message, tags)
             if assignment:
                 assignments.append(assignment)
+            else:
+                logger.debug(f"No valid assignment returned for subject_id={subject_id}")
 
         return MessageTagLabelingRespDto(assignments=assignments)
