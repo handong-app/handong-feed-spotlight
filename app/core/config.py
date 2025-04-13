@@ -19,6 +19,8 @@ class EnvVariables:
 
     HUGGING_FACE_TOKEN = os.getenv("HUGGING_FACE_TOKEN")
 
+    OLLAMA_MODEL = os.getenv("OLLAMA_MODEL")
+
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     GEMINI_API_URL = os.getenv("GEMINI_API_URL")
 
