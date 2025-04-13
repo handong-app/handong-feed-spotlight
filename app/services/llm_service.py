@@ -20,14 +20,14 @@ class LLMService:
         for attempt in range(1, max_attempts + 1):
             try:
                 response_text = self.request_tag_assignment(message, tags)
-                logger.info(f"Gemini API response for subject_id {subject_id}, attempt {attempt}: {response_text}")
+                logger.info(f"{EnvVariables.LLM_PROVIDER.capitalize()} API response for subject_id {subject_id}, attempt {attempt}: {response_text}")
                 tag_codes = self.extract_tag_codes_array_from_json_str(response_text)
                 if isinstance(tag_codes, list) and all(isinstance(tc, str) for tc in tag_codes) and tag_codes:
                     return MessageTagAssignment(subject_id=subject_id, tag_codes=tag_codes)
                 else:
                     raise Exception("추출된 결과가 유효한 문자열 배열이 아닙니다.")
             except Exception as e:
-                logger.error(f"Gemini API 응답 파싱 실패 for subject_id {subject_id} on attempt {attempt}: {e}")
+                logger.error(f"{EnvVariables.LLM_PROVIDER.capitalize()} API 응답 파싱 실패 for subject_id {subject_id} on attempt {attempt}: {e}")
                 if attempt == max_attempts:
                     raise Exception(
                         f"assign_tag_to_message 실패: {subject_id}에 대해 {max_attempts}번 시도했으나 실패했습니다. ({e})") from e
