@@ -50,7 +50,7 @@ class LLMService:
         """
         Ollama 를 호출하여 프롬프트에 따른 LLM 응답(태그 코드 배열의 JSON 문자열)을 반환합니다.
         """
-        prompt_dict =  self.get_prompt(message, tags);
+        prompt_dict =  self.get_prompt(message, tags)
         messages = [
             {"role": "system", "content": prompt_dict["system_prompt"]},
             {"role": "user", "content": prompt_dict["content"]},
