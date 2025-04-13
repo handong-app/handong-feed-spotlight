@@ -14,7 +14,7 @@ class LLMService:
     def assign_tag_to_message(self, subject_id, message, tags) -> MessageTagAssignment | None:
         """
         단일 메시지에 적합한 태그 코드를 할당합니다.
-        최대 3번까지 재시도하며, Gemini API를 호출하여 태그 코드 배열(JSON 문자열)을 반환받습니다.
+        최대 3번까지 재시도하며, 설정된 LLM Provider API(Ollama 혹은 Gemini)를 호출하여 태그 코드 배열(JSON 문자열)을 반환받습니다.
         """
         max_attempts = 3
         for attempt in range(1, max_attempts + 1):
