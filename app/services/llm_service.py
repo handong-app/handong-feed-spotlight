@@ -56,7 +56,7 @@ class LLMService:
             {"role": "user", "content": prompt_dict["content"]},
         ]
 
-        llm_resp = ollama.chat(model="llama3:8b", messages=messages)
+        llm_resp = ollama.chat(model=EnvVariables.OLLAMA_MODEL, messages=messages)
         try:
             response_text = llm_resp["message"]["content"]
             return response_text
