@@ -1,0 +1,20 @@
+meta {
+  name: get feeds
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://0.0.0.0:9000/api/v1/external/get-feeds
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "start": 1744383600,
+    "end": 1744469999,
+    "isFilterNew": true,
+    "limit": 100
+  }
+}
