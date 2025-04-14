@@ -23,7 +23,7 @@ class HandongFeedAppClient:
         Raises:
             Exception: 호출 실패 시 예외 발생
         """
-        url = f"{EnvVariables.BASE_URL}/api/external/tag"
+        url = f"{EnvVariables.FEED_API_BASE_URL}/api/external/tag"
         try:
             response = requests.get(url)
             response.raise_for_status()
