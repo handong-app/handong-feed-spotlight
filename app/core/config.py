@@ -15,7 +15,8 @@ class EnvVariables:
     DB_CLASSNAME = os.getenv("DB_CLASSNAME")
     DB_PORT = os.getenv("DB_PORT")
 
-    BASE_URL = os.getenv("BASE_URL")
+    FEED_API_BASE_URL = os.getenv("FEED_API_BASE_URL")
+    FEED_API_KEY = os.getenv("FEED_API_KEY")
 
     LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama")
 
