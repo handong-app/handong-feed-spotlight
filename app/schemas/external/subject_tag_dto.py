@@ -5,7 +5,7 @@ from pydantic import BaseModel
 class SubjectTagDto:
     class AssignReqDto(BaseModel):
         tagCode: str
-        forDate: Optional[date] = None
+        forDate: Optional[str] = None
         confidentValue: Optional[float] = -1.0
 
     class AssignRespDto(BaseModel):
@@ -13,5 +13,5 @@ class SubjectTagDto:
         tbSubjectId: int
         tagCode: str
         confidentValue: float
-        forDate: Optional[date] = None
+        forDate: Optional[str] = None
         createdAt: datetime
