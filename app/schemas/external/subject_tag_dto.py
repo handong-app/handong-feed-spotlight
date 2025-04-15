@@ -3,13 +3,13 @@ from typing import Optional, List
 from pydantic import BaseModel
 
 class SubjectTagDto:
-    class CreateReqDto(BaseModel):
+    class AssignReqDto(BaseModel):
         tbSubjectId: int
         tagCode: str
         forDate: Optional[date] = None
         confidentValue: Optional[float] = -1.0
 
-    class CreateRespDto(BaseModel):
+    class AssignRespDto(BaseModel):
         id: int
         tbSubjectId: int
         tagCode: str
