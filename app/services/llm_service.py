@@ -8,7 +8,6 @@ from google import genai
 from google.genai import types
 
 from app.core.config import EnvVariables
-from app.schemas.external.tag_dto import TagDto
 from app.schemas.tag_labeling_dto import MessageTagAssignment
 
 logger = logging.getLogger(__name__)
