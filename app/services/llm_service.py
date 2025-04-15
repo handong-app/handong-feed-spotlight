@@ -1,4 +1,6 @@
 import json
+from typing import List
+
 import ollama
 import logging
 
@@ -6,12 +8,13 @@ from google import genai
 from google.genai import types
 
 from app.core.config import EnvVariables
+from app.schemas.external.tag_dto import TagDto
 from app.schemas.tag_labeling_dto import MessageTagAssignment
 
 logger = logging.getLogger(__name__)
 
 class LLMService:
-    def assign_tag_to_message(self, subject_id, message, tags) -> MessageTagAssignment | None:
+    def assign_tag_to_message(self, subject_id: str, message: str, tags: List[str]) -> MessageTagAssignment | None:
         """
         단일 메시지에 적합한 태그 코드를 할당합니다.
         최대 3번까지 재시도하며, 설정된 LLM Provider API(Ollama 혹은 Gemini)를 호출하여 태그 코드 배열(JSON 문자열)을 반환받습니다.
@@ -92,6 +95,9 @@ class LLMService:
 
     @staticmethod
     def get_prompt(message, tags) -> dict:
+        # tags 인자가 Pydantic 모델일 경우, 각 항목을 dict로 변환합니다.
+        tags_serializable = [tag.dict() for tag in tags] if tags and hasattr(tags[0], "dict") else tags
+
         system_prompt = f"""
              persona: 너는 콘텐츠 라벨링 전문가야.
              instruction:
@@ -100,7 +106,7 @@ class LLMService:
                   - 적합성이 95% 이상일 경우에만 출력에 포함시키며, 태그는 최대 3개까지만 선택해.
                   - 출력은 반드시 오직 순수한 JSON 배열만 출력해야 해. 다른 텍스트나 번호 매김 없이 오직 JSON 형식이어야 해.
              태그 목록:
-             {json.dumps(tags, ensure_ascii=False, indent=2)}
+             {json.dumps(tags_serializable, ensure_ascii=False, indent=2)}
              출력 형식 예시:
              ["<tag_code1>", "<tag_code2>", ...]
              """
