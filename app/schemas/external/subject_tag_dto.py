@@ -6,10 +6,8 @@ class SubjectTagDto:
     class CreateReqDto(BaseModel):
         tbSubjectId: int
         tagCode: str
-        confidentValue: float
         forDate: Optional[date] = None
-        updatedBy: Optional[str] = None
-        updatedByType: Optional[str] = None
+        confidentValue: Optional[float] = -1.0
 
     class CreateRespDto(BaseModel):
         id: int
