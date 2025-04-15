@@ -74,7 +74,7 @@ class HandongFeedAppClient(BaseAPIClient):
             raise Exception(f"Failed to get feed: {e}") from e
 
 
-    def assign_tags_batch(self, subject_id: str, assignments: List[SubjectTagDto.CreateReqDto]) -> List[SubjectTagDto.CreateRespDto]:
+    def assign_tags_batch(self, subject_id: str, assign_reqs: List[SubjectTagDto.AssignReqDto]) -> List[SubjectTagDto.AssignRespDto]:
         """
         POST /api/external/subject/:subjectId/tag-assign-batch를 호출하여 여러 태그 배정 요청을 보냅니다.
 
@@ -97,7 +97,7 @@ class HandongFeedAppClient(BaseAPIClient):
 
         Args:
             subject_id (str): 태그 배정 대상의 subject ID
-            assignments (List[CreateReqDto]): 태그 배정 요청 데이터 목록
+            assign_reqs (List[CreateReqDto]): 태그 배정 요청 데이터 목록
 
         Returns:
             SubjectTagAssignBatchRespDto: 각 태그 배정 결과를 담은 DTO (assignments: List[CreateResDto])
@@ -105,7 +105,7 @@ class HandongFeedAppClient(BaseAPIClient):
             Exception: API 호출 실패 또는 저장 실패 시 예외 발생
         """
         url = f"{self.feed_base_api_url}/subject/{subject_id}/tag-assign-batch"
-        payload = [assignment.model_dump() for assignment in assignments]
+        payload = [assignment.model_dump() for assignment in assign_reqs]
         try:
             response = self.post(url, json=payload)
             response.raise_for_status()
@@ -115,13 +115,13 @@ class HandongFeedAppClient(BaseAPIClient):
                 if item.get("id", 0) == -1:
                     raise Exception(f"중복으로 인해 저장 실패한 태그 배정: {item}")
             logger.info(f"Successfully assigned tags batch for subject_id {subject_id}")
-            return [SubjectTagDto.CreateRespDto(**item) for item in result_json]
+            return [SubjectTagDto.AssignRespDto(**item) for item in result_json]
         except Exception as e:
             logger.error(f"Failed to assign tags batch for subject_id {subject_id}: {e}")
             raise Exception(f"Failed to assign tags batch for subject_id {subject_id}: {e}") from e
 
 
-    def assign_tag(self, subject_id: str, assignment: SubjectTagDto.CreateReqDto) -> SubjectTagDto.CreateRespDto:
+    def assign_tag(self, subject_id: str, assign_req: SubjectTagDto.AssignReqDto) -> SubjectTagDto.AssignRespDto:
         """
         POST /api/external/subject/:subjectId/tag-assign를 호출하여 단일 태그 배정 요청을 보냅니다.
 
@@ -137,7 +137,7 @@ class HandongFeedAppClient(BaseAPIClient):
 
         Args:
             subject_id (str): 단일 태그 배정 대상의 subject ID
-            assignment (CreateReqDto): 단일 태그 배정 요청 데이터
+            assign_req (CreateReqDto): 단일 태그 배정 요청 데이터
 
         Returns:
             CreateResDto: 단일 태그 배정 결과 DTO
@@ -146,7 +146,7 @@ class HandongFeedAppClient(BaseAPIClient):
             Exception: API 호출 실패 또는 저장 실패 시 예외 발생
         """
         url = f"{self.feed_base_api_url}/subject/{subject_id}/tag-assign"
-        payload = assignment.model_dump()
+        payload = assign_req.model_dump()
         try:
             response = self.post(url, json=payload)
             response.raise_for_status()
@@ -154,7 +154,7 @@ class HandongFeedAppClient(BaseAPIClient):
             if result_json.get("id", 0) == -1:
                 raise Exception(f"중복으로 인해 저장 실패한 단일 태그 배정: {result_json}")
             logger.info(f"Successfully assigned tag for subject_id {subject_id}")
-            return SubjectTagDto.CreateRespDto(**result_json)
+            return SubjectTagDto.AssignRespDto(**result_json)
         except Exception as e:
             logger.error(f"Failed to assign tag for subject_id {subject_id}: {e}")
             raise Exception(f"Failed to assign tag for subject_id {subject_id}: {e}") from e
