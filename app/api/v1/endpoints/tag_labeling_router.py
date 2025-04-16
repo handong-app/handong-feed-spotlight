@@ -1,5 +1,9 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Depends
 
+from sqlalchemy.orm import Session
+from app.core.database import get_db
+from app.schemas.tag_fail_feed_dto import FailFeedResp
+from app.services.tag_fail_log_service import TagFailLogService
 from app.services.tag_labeling_service import TagLabelingService
 from app.schemas.tag_labeling_dto import MessageTagLabelingRespDto
 
@@ -24,3 +28,15 @@ def assign_tags(
     """
     service = TagLabelingService()
     return service.assign_tags_to_messages_iterative(start_date, end_date, is_filter_new, limit)
+
+@tag_labeling_router.get("/fail-feeds", response_model=FailFeedResp)
+def get_tag_assign_fail_feeds(db: Session = Depends(get_db)):
+    """
+    처리되지 않은 태그 할당 실패 로그 항목들(is_processed=False)의 feed 정보를 반환합니다.
+
+    Returns:
+        FailLogSubjectIds: 실패 로그에 해당하는 feed 들의 리스트를 담은 DTO.
+
+    """
+    service = TagFailLogService(db)
+    return service.get_unprocessed_fail_feeds()
