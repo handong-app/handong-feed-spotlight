@@ -1,0 +1,1 @@
+from .tag_assign_fail_log import TagAssignFailLog
