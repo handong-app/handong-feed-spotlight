@@ -13,6 +13,6 @@ class TagFailLogService:
         처리되지 않은(즉, is_processed == False) 태그 할당 실패 로그들을 DB 에서 조회 후 해당 feed 의 정보를 리턴합니다.
         """
         fail_logs = self.db.query(TagAssignFailLog).filter(TagAssignFailLog.is_processed == False).all()
-        fail_feed_dtos = list(map(lambda fail_log: fail_log.to_dto(), fail_logs))
+        fail_feed_dtos = list(map(lambda fail_log: fail_log.to_fail_feed_detail_dto(), fail_logs))
 
         return FailFeedResp(fail_feeds=fail_feed_dtos)
