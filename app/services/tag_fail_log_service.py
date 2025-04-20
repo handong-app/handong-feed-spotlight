@@ -6,6 +6,7 @@ from app.schemas.tag_fail_feed_dto import FailFeedResp
 class TagFailLogService:
     def __init__(self, db: Session):
         self.db = db
+        self.tag_assign_fail_log_repo = TagAssignFailLogRepository(self.db)
 
     def get_unprocessed_fail_feeds(self) -> FailFeedResp:
         """
