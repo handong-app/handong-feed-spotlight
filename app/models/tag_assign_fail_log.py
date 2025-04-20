@@ -20,7 +20,7 @@ class TagAssignFailLog(Base):
         return (f"<TagAssignFailLog(id={self.id}, subject_id={self.subject_id}, "
                 f"for_date={self.for_date}, is_processed={self.is_processed})>")
 
-    def to_dto(self):
+    def to_fail_feed_detail_dto(self):
         return FailFeedDetail(
             subject_id=self.subject_id,
             message=self.message,
