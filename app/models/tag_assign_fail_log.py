@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, Text, Date, DateTime, Boolean, func
 from app.core.database import Base
+from app.schemas.tag_assign_fail_log_dto import TagAssignFailLogDto
 from app.schemas.tag_fail_feed_dto import FailFeedDetail
 
 
@@ -22,7 +23,17 @@ class TagAssignFailLog(Base):
 
     def to_fail_feed_detail_dto(self):
         return FailFeedDetail(
+            fail_id=self.id,
             subject_id=self.subject_id,
             message=self.message,
             for_date=self.for_date,
+        )
+
+    def to_create_resp_dto(self):
+        return TagAssignFailLogDto.CreateRespDto(
+            id=self.id,
+            subject_id=self.subject_id,
+            message=self.message,
+            for_date=self.for_date,
+            error_message=self.error_message,
         )
