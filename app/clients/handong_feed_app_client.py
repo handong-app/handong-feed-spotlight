@@ -158,3 +158,25 @@ class HandongFeedAppClient(BaseAPIClient):
         except Exception as e:
             logger.error(f"Failed to assign tag for subject_id {subject_id}: {e}")
             raise Exception(f"Failed to assign tag for subject_id {subject_id}: {e}") from e
+
+
+    def get_latest_for_date(self) -> SubjectTagDto.GetLatestForDateResDto:
+        """
+        GET /api/external/subject-tag/latest-for-date 를 호출하여 최신 for_date 를 받습니다.
+
+        Returns:
+            ReadLatestForDateResDto: 최신 for_date 응답 DTO
+
+        Raises:
+            Exception: API 호출 실패 시 예외 발생
+        """
+        url = f"{self.feed_base_api_url}/subject-tag/latest-for-date"
+        try:
+            response = self.get(url)
+            response.raise_for_status()
+            result_json = response.json()
+            logger.info(f"Successfully get latest for_date: {result_json.get('latestForDate')}")
+            return SubjectTagDto.GetLatestForDateResDto(**result_json)
+        except Exception as e:
+            logger.error(f"Failed to get latest for_date: {e}")
+            raise Exception(f"Failed to get latest for_date: {e}") from e
