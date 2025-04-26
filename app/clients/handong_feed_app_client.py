@@ -174,6 +174,12 @@ class HandongFeedAppClient(BaseAPIClient):
         try:
             response = self.get(url)
             response.raise_for_status()
+
+            # 204 No Content 응답 처리
+            if response.status_code == 204:
+                logger.info("No latest for_date found (204 No Content)")
+                return SubjectTagDto.GetLatestForDateResDto(latestForDate=None)
+
             result_json = response.json()
             logger.info(f"Successfully get latest for_date: {result_json.get('latestForDate')}")
             return SubjectTagDto.GetLatestForDateResDto(**result_json)
