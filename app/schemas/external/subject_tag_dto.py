@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional
 from pydantic import BaseModel
 
@@ -15,3 +15,6 @@ class SubjectTagDto:
         confidentValue: float
         forDate: Optional[str] = None
         createdAt: datetime
+
+    class GetLatestForDateResDto(BaseModel):
+        latestForDate: Optional[date]
