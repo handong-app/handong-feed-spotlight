@@ -76,7 +76,7 @@ class HandongFeedAppClient(BaseAPIClient):
 
     def assign_tags_batch(self, subject_id: str, assign_reqs: List[SubjectTagDto.AssignReqDto]) -> List[SubjectTagDto.AssignRespDto]:
         """
-        POST /api/external/subject/:subjectId/tag-assign-batch를 호출하여 여러 태그 배정 요청을 보냅니다.
+        POST /api/external/subject-tag/:subjectId/tag-assign-batch를 호출하여 여러 태그 배정 요청을 보냅니다.
 
         요청 예시:
         [
@@ -104,7 +104,7 @@ class HandongFeedAppClient(BaseAPIClient):
         Raises:
             Exception: API 호출 실패 또는 저장 실패 시 예외 발생
         """
-        url = f"{self.feed_base_api_url}/subject/{subject_id}/tag-assign-batch"
+        url = f"{self.feed_base_api_url}/subject-tag/{subject_id}/tag-assign-batch"
         payload = [assignment.model_dump() for assignment in assign_reqs]
         try:
             response = self.post(url, json=payload)
@@ -123,7 +123,7 @@ class HandongFeedAppClient(BaseAPIClient):
 
     def assign_tag(self, subject_id: str, assign_req: SubjectTagDto.AssignReqDto) -> SubjectTagDto.AssignRespDto:
         """
-        POST /api/external/subject/:subjectId/tag-assign를 호출하여 단일 태그 배정 요청을 보냅니다.
+        POST /api/external/subject-tag/:subjectId/tag-assign를 호출하여 단일 태그 배정 요청을 보냅니다.
 
         요청 예시:
         {
@@ -145,7 +145,7 @@ class HandongFeedAppClient(BaseAPIClient):
         Raises:
             Exception: API 호출 실패 또는 저장 실패 시 예외 발생
         """
-        url = f"{self.feed_base_api_url}/subject/{subject_id}/tag-assign"
+        url = f"{self.feed_base_api_url}/subject-tag/{subject_id}/tag-assign"
         payload = assign_req.model_dump()
         try:
             response = self.post(url, json=payload)
@@ -158,3 +158,31 @@ class HandongFeedAppClient(BaseAPIClient):
         except Exception as e:
             logger.error(f"Failed to assign tag for subject_id {subject_id}: {e}")
             raise Exception(f"Failed to assign tag for subject_id {subject_id}: {e}") from e
+
+
+    def get_latest_for_date(self) -> SubjectTagDto.GetLatestForDateResDto:
+        """
+        GET /api/external/subject-tag/latest-for-date 를 호출하여 최신 for_date 를 받습니다.
+
+        Returns:
+            ReadLatestForDateResDto: 최신 for_date 응답 DTO
+
+        Raises:
+            Exception: API 호출 실패 시 예외 발생
+        """
+        url = f"{self.feed_base_api_url}/subject-tag/latest-for-date"
+        try:
+            response = self.get(url)
+            response.raise_for_status()
+
+            # 204 No Content 응답 처리
+            if response.status_code == 204:
+                logger.info("No latest for_date found (204 No Content)")
+                return SubjectTagDto.GetLatestForDateResDto(latestForDate=None)
+
+            result_json = response.json()
+            logger.info(f"Successfully get latest for_date: {result_json.get('latestForDate')}")
+            return SubjectTagDto.GetLatestForDateResDto(**result_json)
+        except Exception as e:
+            logger.error(f"Failed to get latest for_date: {e}")
+            raise Exception(f"Failed to get latest for_date: {e}") from e
