@@ -27,18 +27,19 @@ def run():
                 raise e
 
 
-        print(f"\n[CRON] Retrying failed tag assignments...")
+        print("\n[CRON] Retrying failed tag assignments...")
         try:
             resp =  service.process_failed_feeds()
             print(f"[CRON] Number of failed feeds that were successfully assigned by retry: {len(resp.assign_resp_dtos_list)}")
         except HTTPException as e:
             if e.status_code == 204:
-                print(f"[CRON] No failed feeds to process.")
+                print("[CRON] No failed feeds to process.")
             else:
                 raise e
 
     except Exception as e:
-        print(f"[CRON ERROR] {e}")
+        import logging
+        logging.error(f"[CRON] Error during tag assignment: {e}", exc_info=True)
 
     finally:
         db.close()
