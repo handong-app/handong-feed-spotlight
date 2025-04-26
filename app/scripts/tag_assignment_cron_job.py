@@ -9,7 +9,7 @@ def run():
     service = TagLabelingService(db)
 
     try:
-        yesterday = (date.fromisoformat("2025-01-21") - timedelta(days=1)).isoformat()
+        yesterday = (date.today() - timedelta(days=1)).isoformat()
         print(f"[CRON] Assigning tags to new feeds for {yesterday}")
         try:
             resp = service.process_feeds_with_date(
