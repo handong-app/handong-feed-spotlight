@@ -19,19 +19,25 @@ class BaseAPIClient:
     def get(self, url, **kwargs):
         try:
             response = self.session.get(url, **kwargs)
-            response.raise_for_status()  # 4xx, 5xx 응답에 대해 예외 발생
+            response.raise_for_status()
             return response
+        except requests.exceptions.HTTPError as e:
+            logging.error(f"GET 요청 실패 (HTTP 오류) - URL: {url}, 상태 코드: {e.response.status_code}, 오류: {e}")
+            raise
         except requests.exceptions.RequestException as e:
-            logging.error(f"GET 요청 실패: {url}, 오류: {str(e)}")
+            logging.error(f"GET 요청 실패 (네트워크 오류) - URL: {url}, 오류: {e}")
             raise
 
     def post(self, url, **kwargs):
         try:
             response = self.session.post(url, **kwargs)
-            response.raise_for_status()  # 4xx, 5xx 응답에 대해 예외 발생
+            response.raise_for_status()
             return response
+        except requests.exceptions.HTTPError as e:
+            logging.error(f"POST 요청 실패 (HTTP 오류) - URL: {url}, 상태 코드: {e.response.status_code}, 오류: {e}")
+            raise
         except requests.exceptions.RequestException as e:
-            logging.error(f"POST 요청 실패: {url}, 오류: {str(e)}")
+            logging.error(f"POST 요청 실패 (네트워크 오류) - URL: {url}, 오류: {e}")
             raise
 
     def patch(self, url, **kwargs):
