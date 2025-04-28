@@ -186,3 +186,40 @@ class HandongFeedAppClient(BaseAPIClient):
         except Exception as e:
             logger.error(f"Failed to get latest for_date: {e}")
             raise Exception(f"Failed to get latest for_date: {e}") from e
+
+    def update_is_tag_assigned_true(self, subject_id: int):
+        """
+        PATCH /api/external/subject/{subjectId}/tag-assigned를 호출하여
+        주제 ID를 기반으로 태그 할당 완료 상태로 갱신합니다.
+
+        Args:
+            subject_id (int): 업데이트할 주제 ID
+
+        Raises:
+            Exception: API 호출 실패 또는 지정된 주제를 찾을 수 없는 경우
+        """
+        url = f"{self.feed_base_api_url}/subject/{subject_id}/tag-assigned"
+
+        import requests
+        try:
+            response = self.patch(url)
+
+            # 예상한 204 No Content 응답 처리
+            if response.status_code == 204:
+                return
+
+            # 예상 외의 정상 응답 (ex: 200, 201)이 오면 의심
+            raise Exception(f"Unexpected success response: {response.status_code}")
+
+        except requests.exceptions.HTTPError as e:
+            status_code = e.response.status_code
+
+            if status_code == 404:
+                raise Exception(f"Subject not found with ID: {subject_id}")
+            elif status_code == 403:
+                raise Exception(f"Access denied when updating subject with ID: {subject_id}")
+            else:
+                raise Exception(f"HTTP error occurred while updating subject: {e}")
+
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"Failed to update is_tag_assigned for subject: {subject_id}. Error: {e}")
