@@ -1,4 +1,5 @@
 import logging
+import requests
 from typing import List
 
 from app.clients.base_api_client import BaseAPIClient
@@ -200,7 +201,6 @@ class HandongFeedAppClient(BaseAPIClient):
         """
         url = f"{self.feed_base_api_url}/subject/{subject_id}/tag-assigned"
 
-        import requests
         try:
             response = self.patch(url)
 
