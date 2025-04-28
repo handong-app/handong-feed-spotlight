@@ -16,40 +16,34 @@ class BaseAPIClient:
         # 타임아웃 설정 (connect=5초, read=30초)
         self.session.timeout = (5, 30)
 
-    def get(self, url, **kwargs):
+    def _send_request(self, method, url, **kwargs):
+        """
+        HTTP 요청을 보내고 공통적으로 예외를 처리하는 private 메서드
+
+        Args:
+            method (str): HTTP 메서드 ('GET', 'POST', 'PATCH' 등)
+            url (str): 요청할 URL
+            kwargs: 추가 요청 옵션
+
+        Returns:
+            requests.Response: 요청 결과 응답
+        """
         try:
-            response = self.session.get(url, **kwargs)
+            response = self.session.request(method, url, **kwargs)
             response.raise_for_status()
             return response
         except requests.exceptions.HTTPError as e:
-            logging.error(f"GET 요청 실패 (HTTP 오류) - URL: {url}, 상태 코드: {e.response.status_code}, 오류: {e}")
+            logging.error(f"{method} 요청 실패 (HTTP 오류) - URL: {url}, 상태 코드: {e.response.status_code}, 오류: {e}")
             raise
         except requests.exceptions.RequestException as e:
-            logging.error(f"GET 요청 실패 (네트워크 오류) - URL: {url}, 오류: {e}")
+            logging.error(f"{method} 요청 실패 (네트워크 오류) - URL: {url}, 오류: {e}")
             raise
+
+    def get(self, url, **kwargs):
+        return self._send_request('GET', url, **kwargs)
 
     def post(self, url, **kwargs):
-        try:
-            response = self.session.post(url, **kwargs)
-            response.raise_for_status()
-            return response
-        except requests.exceptions.HTTPError as e:
-            logging.error(f"POST 요청 실패 (HTTP 오류) - URL: {url}, 상태 코드: {e.response.status_code}, 오류: {e}")
-            raise
-        except requests.exceptions.RequestException as e:
-            logging.error(f"POST 요청 실패 (네트워크 오류) - URL: {url}, 오류: {e}")
-            raise
+        return self._send_request('POST', url, **kwargs)
 
     def patch(self, url, **kwargs):
-        try:
-            response = self.session.patch(url, **kwargs)
-            response.raise_for_status()  # 4xx, 5xx 응답에 대해 예외 발생
-            return response
-        except requests.exceptions.HTTPError as e:
-            # HTTP 에러가 발생한 경우 (ex: 404, 500)
-            logging.error(f"PATCH 요청 실패 (HTTP 오류) - URL: {url}, 상태 코드: {e.response.status_code}, 오류: {e}")
-            raise
-        except requests.exceptions.RequestException as e:
-            # 연결 실패, Timeout 등 기타 모든 Request 예외
-            logging.error(f"PATCH 요청 실패 (네트워크 오류) - URL: {url}, 오류: {e}")
-            raise
+        return self._send_request('PATCH', url, **kwargs)
