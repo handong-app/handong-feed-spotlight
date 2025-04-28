@@ -33,3 +33,17 @@ class BaseAPIClient:
         except requests.exceptions.RequestException as e:
             logging.error(f"POST 요청 실패: {url}, 오류: {str(e)}")
             raise
+
+    def patch(self, url, **kwargs):
+        try:
+            response = self.session.patch(url, **kwargs)
+            response.raise_for_status()  # 4xx, 5xx 응답에 대해 예외 발생
+            return response
+        except requests.exceptions.HTTPError as e:
+            # HTTP 에러가 발생한 경우 (ex: 404, 500)
+            logging.error(f"PATCH 요청 실패 (HTTP 오류) - URL: {url}, 상태 코드: {e.response.status_code}, 오류: {e}")
+            raise
+        except requests.exceptions.RequestException as e:
+            # 연결 실패, Timeout 등 기타 모든 Request 예외
+            logging.error(f"PATCH 요청 실패 (네트워크 오류) - URL: {url}, 오류: {e}")
+            raise
