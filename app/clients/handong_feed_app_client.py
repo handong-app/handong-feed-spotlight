@@ -215,11 +215,11 @@ class HandongFeedAppClient(BaseAPIClient):
             status_code = e.response.status_code
 
             if status_code == 404:
-                raise Exception(f"Subject not found with ID: {subject_id}")
+                raise Exception(f"Subject not found with ID: {subject_id}") from e
             elif status_code == 403:
-                raise Exception(f"Access denied when updating subject with ID: {subject_id}")
+                raise Exception(f"Access denied when updating subject with ID: {subject_id}") from e
             else:
-                raise Exception(f"HTTP error occurred while updating subject: {e}")
+                raise Exception(f"HTTP error occurred while updating subject: {e}") from e
 
         except requests.exceptions.RequestException as e:
-            raise Exception(f"Failed to update is_tag_assigned for subject: {subject_id}. Error: {e}")
+            raise Exception(f"Failed to update is_tag_assigned for subject: {subject_id}. Error: {e}") from e
