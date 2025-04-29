@@ -1,9 +1,15 @@
+import logging
 from datetime import date, timedelta
 from fastapi import HTTPException
 
 from app.clients.handong_feed_app_client import HandongFeedAppClient
 from app.services.tag_labeling_service import TagLabelingService
 from app.core.database import SessionLocal
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s - %(message)s",
+)
 
 
 def run():
