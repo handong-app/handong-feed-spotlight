@@ -148,4 +148,18 @@ class TagLabelingService:
                     )
                 continue
 
+        self.update_subject_tag_assignment(assign_resp_dtos_list)
+
         return MessageTagLabelingRespDto(assign_resp_dtos_list= assign_resp_dtos_list)
+
+    def update_subject_tag_assignment(self, assign_resp_dtos_list):
+        """
+        주제 태그 할당 완료 처리를 위한 헬퍼 메서드.
+
+        Args:
+            assign_resp_dtos_list: 태그 할당 응답 DTO 리스트
+        """
+        for dto in assign_resp_dtos_list:
+            if dto and hasattr(dto[0], 'tbSubjectId') and dto[0].tbSubjectId:
+                logger.info(f"Updating subject tag assignment for tbSubjectId={dto[0].tbSubjectId}")
+                self.handong_feed_app_client.update_is_tag_assigned_true(dto[0].tbSubjectId)
