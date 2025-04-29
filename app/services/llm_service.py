@@ -30,7 +30,7 @@ class LLMService:
         if self.request_count >= EnvVariables.LLM_API_REQUESTS_PER_MINUTE:
             # 분당 요청 초과했으면 대기
             wait_seconds = 60 - (now - self.request_window_start).seconds
-            logger.info(f"[LLMService] 15회 요청 완료. {wait_seconds}초 대기합니다...")
+            logger.info(f"[LLMService] {EnvVariables.LLM_API_REQUESTS_PER_MINUTE}회 요청 완료. {wait_seconds}초 대기합니다...")
             time.sleep(wait_seconds)
             # 초기화
             self.request_count = 0
