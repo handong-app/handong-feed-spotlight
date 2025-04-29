@@ -1,8 +1,10 @@
 import json
-from typing import List
-
 import ollama
 import logging
+import time
+
+from datetime import datetime, timedelta, UTC
+from typing import List
 
 from google import genai
 from google.genai import types
@@ -13,6 +15,27 @@ from app.schemas.tag_labeling_dto import MessageTagAssignment
 logger = logging.getLogger(__name__)
 
 class LLMService:
+    def __init__(self):
+        self.request_count = 0
+        self.request_window_start = datetime.now(UTC)
+
+    def enforce_rate_limit(self):
+        # LLM_API_REQUESTS_PER_MINUTE 제한
+        now = datetime.now(UTC)
+        if (now - self.request_window_start) > timedelta(minutes=1):
+            # 1분 지났으면 초기화
+            self.request_count = 0
+            self.request_window_start = now
+
+        if self.request_count >= EnvVariables.LLM_API_REQUESTS_PER_MINUTE:
+            # 분당 요청 초과했으면 대기
+            wait_seconds = 60 - (now - self.request_window_start).seconds
+            logger.info(f"[LLMService] 15회 요청 완료. {wait_seconds}초 대기합니다...")
+            time.sleep(wait_seconds)
+            # 초기화
+            self.request_count = 0
+            self.request_window_start = datetime.now(UTC)
+
     def assign_tag_to_message(self, subject_id: str, message: str, tags: List[str]) -> MessageTagAssignment | None:
         """
         단일 메시지에 적합한 태그 코드를 할당합니다.
@@ -20,8 +43,10 @@ class LLMService:
         """
         max_attempts = 3
         for attempt in range(1, max_attempts + 1):
+            self.enforce_rate_limit()
             try:
                 response_text = self.request_tag_assignment(message, tags)
+                self.request_count += 1
                 logger.info(f"{EnvVariables.LLM_PROVIDER.capitalize()} API response for subject_id {subject_id}, attempt {attempt}: {response_text}")
                 tag_codes = self.extract_tag_codes_array_from_json_str(response_text)
                 if isinstance(tag_codes, list) and all(isinstance(tc, str) for tc in tag_codes) and tag_codes:
@@ -139,3 +164,6 @@ class LLMService:
             return tag_codes
         except Exception as e:
             raise Exception(str(e)) from e
+
+# 싱글톤으로 서비스를 사용하기 위함
+llm_service_singleton = LLMService()
