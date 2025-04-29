@@ -53,7 +53,6 @@ def run():
                 raise e
 
     except Exception as e:
-        import logging
         logging.error(f"[CRON] Error during tag assignment: {e}", exc_info=True)
 
     finally:
