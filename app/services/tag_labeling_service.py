@@ -157,10 +157,9 @@ class TagLabelingService:
         주제 태그 할당 완료 처리를 위한 헬퍼 메서드.
 
         Args:
-            client: HandongFeedAppClient 인스턴스
             assign_resp_dtos_list: 태그 할당 응답 DTO 리스트
         """
         for dto in assign_resp_dtos_list:
             if dto and hasattr(dto[0], 'tbSubjectId') and dto[0].tbSubjectId:
-                print(f"[CRON] Updating subject tag assignment for tbSubjectId={dto[0].tbSubjectId}")
+                logger.info(f"Updating subject tag assignment for tbSubjectId={dto[0].tbSubjectId}")
                 self.handong_feed_app_client.update_is_tag_assigned_true(dto[0].tbSubjectId)
