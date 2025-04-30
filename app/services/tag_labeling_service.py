@@ -9,9 +9,9 @@ from app.schemas.external.subject_tag_dto import SubjectTagDto
 from app.schemas.external.tag_dto import TagDto
 from app.schemas.tag_assign_fail_log_dto import TagAssignFailLogDto
 from app.schemas.tag_labeling_dto import MessageTagLabelingRespDto, AssignTagsToMessageServDto
-from app.services.llm_service import LLMService
+from app.services.llm_service import llm_service_singleton
 from app.services.tag_fail_log_service import TagFailLogService
-from app.util.date_utils import convert_start_date_to_unix, convert_end_date_to_unix, convert_unix_to_date_str
+from app.util.date_utils import convert_start_date_to_unix, convert_end_date_to_unix
 from app.util.pii_cleaner import mask_all_ppi
 from app.util.text_cleaner import TextCleaner
 
@@ -21,7 +21,7 @@ class TagLabelingService:
     def __init__(self, db: Session):
         self.db = db
         self.cleaner = TextCleaner()
-        self.llm_service = LLMService()
+        self.llm_service = llm_service_singleton
         self.handong_feed_app_client = HandongFeedAppClient()
         self.tag_fail_log_service = TagFailLogService(db)
 

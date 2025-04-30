@@ -27,6 +27,8 @@ class EnvVariables:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     GEMINI_API_URL = os.getenv("GEMINI_API_URL")
 
+    LLM_API_REQUESTS_PER_MINUTE = int(os.getenv("LLM_API_REQUESTS_PER_MINUTE", "15"))
+
     SAMPLE_TAGS = json.loads(os.getenv("SAMPLE_TAGS", "[]"))
     SAMPLE_MESSAGES = json.loads(os.getenv("SAMPLE_MESSAGES", "[]"))
 
