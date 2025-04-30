@@ -32,8 +32,8 @@ ___
 ## 📁 변경된 파일/폴더
 <!-- 변경된 주요 파일 경로나 구조가 있다면 정리해주세요
 e.g.,
-- `routes/auth.ts`
-- `services/userService.ts`-->
+- `api/v1/endpoints/tag_labeling_router.py`
+- `services/llm_service.py`-->
 
 ___ 
 
