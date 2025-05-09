@@ -21,7 +21,7 @@ def run():
         yesterday = (date.today() - timedelta(days=1)).isoformat()
         latest_for_date = str(client.get_latest_for_date().latestForDate + timedelta(days=1))
 
-        print(f"[ACTION] Assigning tags to new feeds for {latest_for_date} ~ {yesterday}")
+        logging.info(f"[ACTION] Assigning tags to new feeds for {latest_for_date} ~ {yesterday}")
         try:
             resp = service.process_feeds_with_date(
                 start_date=latest_for_date,
@@ -29,26 +29,26 @@ def run():
                 is_filter_new=1,
                 limit=100
             )
-            print(
+            logging.info(
                 f"[ACTION] Number of new feeds added yesterday that were successfully assigned: {len(resp.assign_resp_dtos_list)}")
 
 
         except HTTPException as e:
             if e.status_code == 204:
-                print(f"[ACTION] No new feeds to process for {yesterday}.")
+                logging.info(f"[ACTION] No new feeds to process for {yesterday}.")
             else:
                 raise e
 
 
-        print("\n[ACTION] Retrying failed tag assignments...")
+        logging.info("\n[ACTION] Retrying failed tag assignments...")
         try:
             resp =  service.process_failed_feeds()
-            print(f"[ACTION] Number of failed feeds that were successfully assigned by retry: {len(resp.assign_resp_dtos_list)}")
+            logging.info(f"[ACTION] Number of failed feeds that were successfully assigned by retry: {len(resp.assign_resp_dtos_list)}")
 
 
         except HTTPException as e:
             if e.status_code == 204:
-                print("[ACTION] No failed feeds to process.")
+                logging.info("[ACTION] No failed feeds to process.")
             else:
                 raise e
 
