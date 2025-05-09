@@ -58,7 +58,6 @@ class LLMService:
                 if attempt == max_attempts:
                     raise Exception(
                         f"assign_tag_to_message 실패: {subject_id}에 대해 {max_attempts}번 시도했으나 실패했습니다. ({e})") from e
-                return None
         return None
 
     def request_tag_assignment(self, message, tags) -> str:
