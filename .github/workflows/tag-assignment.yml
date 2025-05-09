@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: app
+        working-directory: .
 
     env:
       API_PORT: ${{ secrets.API_PORT }}
@@ -18,7 +18,7 @@ jobs:
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       DB_CLASSNAME: ${{ secrets.DB_CLASSNAME }}
       DB_PORT: ${{ secrets.DB_PORT }}
-      BASE_URL: ${{ secrets.FEED_API_BASE_URL }}
+      FEED_API_BASE_URL: ${{ secrets.FEED_API_BASE_URL }}
       LLM_PROVIDER: ${{ secrets.LLM_PROVIDER }}
       HUGGING_FACE_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}
       OLLAMA_MODEL: ${{ secrets.OLLAMA_MODEL }}
@@ -41,4 +41,5 @@ jobs:
 
       - name: Run Tag Assignment Runner
         run: |
-          python scripts/tag_assignment_runner.py
+          export PYTHONPATH=.
+          python app/scripts/tag_assignment_action.py
