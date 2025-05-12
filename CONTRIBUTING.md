@@ -1,4 +1,3 @@
-
 # 🛠️ Handong Feed AI 프로젝트 컨벤션
 
 이 문서는 Handong Feed AI 프로젝트에서 사용되는 **브랜치 네이밍**, **작업 방식**, **PR 작성 규칙**, **커밋 컨벤션**을 정의합니다.
@@ -7,12 +6,12 @@
 
 ## 📚 목차
 
-- [📚 브랜치 네이밍 컨벤션](#브랜치-네이밍-컨벤션)
-- [🧩 작업 방식](#작업-방식)
-- [🚀 PR 작성 규칙](#pr-작성-규칙)
-- [✅ 커밋 메시지 컨벤션 (+ Gitmoji)](#커밋-메시지-컨벤션--gitmoji)
+- [📚 브랜치 네이밍 컨벤션](#-브랜치-네이밍-컨벤션)
+- [🧩 작업 방식](#-작업-방식)
+- [🚀 PR 작성 규칙](#-pr-작성-규칙)
+- [✅ 커밋 메시지 컨벤션 (+ Gitmoji)](#-커밋-메시지-컨벤션--gitmoji)
   - [💥 BREAKING CHANGE: 하위 호환성 변경 주석 규칙](#-breaking-change-하위-호환성-변경-주석-규칙)
-- [📎 기타 참고](#기타-참고)
+- [📎 기타 참고](#-기타-참고)
 
 ---
 
@@ -111,7 +110,7 @@
 | `docs`    | 📝 `:memo:`     | `📝 docs: update project README`          |
 | `refactor`| ♻️ `:recycle:`    | `♻️ refactor: restructure vector logic`    |
 | `test`    | 🧪 `:test_tube:` | `🧪 test: add unit test for rag pipeline` |
-| `ci`      | ⚙️ :gear:         | `⚙️ ci: add deployment step to GitHub Actions`|
+| `ci`      | ⚙️ `:gear:`         | `⚙️ ci: add deployment step to GitHub Actions`|
 
 ### 기타 유용한 Gitmoji
 
