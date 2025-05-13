@@ -25,7 +25,7 @@ class TagLabelingService:
         self.handong_feed_app_client = HandongFeedAppClient()
         self.tag_fail_log_service = TagFailLogService(db)
 
-    def process_feeds_with_date(self, start_date, end_date, is_filter_new, limit) -> MessageTagLabelingRespDto:
+    def process_feeds_with_date(self, start_date, end_date, is_filter_new, onlyUnassignedFeeds, limit) -> MessageTagLabelingRespDto:
         """
         start_date 와 end_date 사이에 생성됝 피드를 assign 시도합니다.
 
@@ -43,6 +43,7 @@ class TagLabelingService:
                     start=start_ts,
                     end=end_ts,
                     isFilterNew=is_filter_new,
+                    onlyUnassignedFeeds=onlyUnassignedFeeds,
                     limit=limit
                 )
             )
