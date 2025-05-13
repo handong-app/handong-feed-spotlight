@@ -29,6 +29,13 @@ class TagLabelingService:
         """
         start_date 와 end_date 사이에 생성됝 피드를 assign 시도합니다.
 
+        Args:
+            start_date: 조회 시작 날짜
+            end_date: 조회 종료 날짜
+            is_filter_new: 새로운 피드만 필터링할지 여부
+            onlyUnassignedFeeds: 태그가 할당되지 않은 피드만 필터링할지 여부
+            limit: 조회할 피드 수 제한
+
         Returns:
             MessageTagLabelingRespDto: 각 메시지의 subject_id와 할당된 태그 코드 배열을 포함하는 DTO.
         """
