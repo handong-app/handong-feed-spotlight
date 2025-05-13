@@ -10,6 +10,7 @@ class FeedDto:
         start: Optional[int] = None
         end: Optional[int] = None
         isFilterNew: int = 1
+        onlyUnassignedFeeds: int = 1
         limit: Optional[int] = None
 
     class ReadRespDto(BaseModel):

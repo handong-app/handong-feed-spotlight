@@ -18,24 +18,25 @@ def run():
     client = HandongFeedAppClient()
 
     try:
-        yesterday = (date.today() - timedelta(days=1)).isoformat()
-        latest_for_date = str(client.get_latest_for_date().latestForDate + timedelta(days=1))
+        today = (date.today()).isoformat()
+        latest_for_date = str(client.get_latest_for_date().latestForDate)
 
-        logging.info(f"[ACTION] Assigning tags to new feeds for {latest_for_date} ~ {yesterday}")
+        logging.info(f"[ACTION] Assigning tags to new feeds for {latest_for_date} ~ {today}")
         try:
             resp = service.process_feeds_with_date(
                 start_date=latest_for_date,
-                end_date=yesterday,
+                end_date=today,
                 is_filter_new=1,
+                onlyUnassignedFeeds=1,
                 limit=100
             )
             logging.info(
-                f"[ACTION] Number of new feeds added yesterday that were successfully assigned: {len(resp.assign_resp_dtos_list)}")
+                f"[ACTION] Number of new feeds that were successfully assigned: {len(resp.assign_resp_dtos_list)}")
 
 
         except HTTPException as e:
             if e.status_code == 204:
-                logging.info(f"[ACTION] No new feeds to process for {yesterday}.")
+                logging.info(f"[ACTION] No new feeds to process for {today}.")
             else:
                 raise e
 
