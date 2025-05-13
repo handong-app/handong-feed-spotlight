@@ -31,7 +31,7 @@ def run():
                 limit=100
             )
             logging.info(
-                f"[ACTION] Number of new feeds added yesterday that were successfully assigned: {len(resp.assign_resp_dtos_list)}")
+                f"[ACTION] Number of new feeds that were successfully assigned: {len(resp.assign_resp_dtos_list)}")
 
 
         except HTTPException as e:
